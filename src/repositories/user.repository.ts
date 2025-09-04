@@ -21,7 +21,7 @@ export class UserRepository extends BaseRepository<User> {
         total_reviews: 0,
       },
     };
-    return this.create(data);
+    return await this.create(data);
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -41,5 +41,15 @@ export class UserRepository extends BaseRepository<User> {
       .get();
 
     return snapshot.docs.map((doc) => doc.data() as User);
+  }
+
+  async findByTaxId(taxId: string) {
+    const snapshot = await this.db
+      .collection(this.collectionName)
+      .where("tax_id", "==", taxId)
+      .limit(1)
+      .get();
+
+    return snapshot.empty ? null : (snapshot.docs[0].data() as User);
   }
 }

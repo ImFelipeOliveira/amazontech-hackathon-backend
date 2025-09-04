@@ -22,7 +22,7 @@ export const AgendamentoSchema = z.object({
   collectionData: CollectionDataSchema.nullable(),
 
   producerName: z.string().min(1),
-  loteImageUrl: z.string().url(),
+  loteImageUrl: z.url(),
   merchantName: z.string().min(1),
 });
 

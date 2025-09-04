@@ -32,5 +32,6 @@ module.exports = {
     "object-curly-spacing": ["error", "always"],
     "require-jsdoc": "off",
     "max-len": ["error", { "code": 100 }],
+    "@typescript-eslint/no-non-null-assertion": "off",
   },
 };

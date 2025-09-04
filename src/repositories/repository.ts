@@ -1,4 +1,4 @@
-import { getFirestore } from "../config/database";
+import { getFirestore, admin } from "../config/database";
 
 /**
  * Exemplo de Repository usando o singleton Firestore + Schemas Zod
@@ -7,13 +7,14 @@ import { getFirestore } from "../config/database";
 // Base Repository com métodos comuns
 export abstract class BaseRepository<T> {
   protected db = getFirestore();
+  protected adm = admin;
   protected abstract collectionName: string;
 
   async create(data: Omit<T, "id" | "uid" | "created_at" | "descriptionAI">): Promise<string> {
     const docRef = this.db.collection(this.collectionName).doc();
     const docData = {
       ...data,
-      id: docRef.id,
+      uid: docRef.id,
       created_at: new Date().toISOString(),
     };
 

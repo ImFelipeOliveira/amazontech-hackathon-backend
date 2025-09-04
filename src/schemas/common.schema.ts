@@ -8,13 +8,7 @@ export const SuccessResponseSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  success: z.literal(false),
-  error: z.object({
-    code: z.string().min(1),
-    message: z.string().min(1),
-    details: z.any().optional(),
-  }),
-  timestamp: z.iso.datetime(),
+  error: z.string().min(1),
 });
 
 export const PaginatedResponseSchema = z.object({

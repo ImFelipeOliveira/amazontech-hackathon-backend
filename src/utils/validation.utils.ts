@@ -12,7 +12,7 @@ export function validateSchema<T>(schema: ZodType<T>, data: unknown): T {
     return schema.parse(data);
   } catch (error) {
     if (error instanceof ZodError) {
-      throw new ValidationError("Dados inválidos", error.issues);
+      throw new ValidationError("Dados inválidos");
     }
     throw error;
   }
@@ -40,12 +40,10 @@ export function safeValidateSchema<T>(
  */
 export class ValidationError extends Error {
   public readonly code = "VALIDATION_ERROR";
-  public readonly details: ZodError["issues"];
 
-  constructor(message: string, details: ZodError["issues"]) {
+  constructor(message: string) {
     super(message);
     this.name = "ValidationError";
-    this.details = details;
   }
 
   /**
@@ -54,17 +52,7 @@ export class ValidationError extends Error {
    */
   toErrorResponse(): ErrorResponse {
     return {
-      success: false,
-      error: {
-        code: this.code,
-        message: this.message,
-        details: this.details.map((err: z.core.$ZodIssue) => ({
-          path: err.path.join("."),
-          message: err.message,
-          code: err.code,
-        })),
-      },
-      timestamp: new Date().toISOString(),
+      error: this.message,
     };
   }
 }

@@ -11,6 +11,7 @@ export const AddressSchema = z.object({
   number: z.string().min(1),
   neighborhood: z.string().min(1),
   city: z.string().min(1),
+  state: z.string().min(1).optional(),
   zip_code: z.string().regex(/^\d{5}-?\d{3}$/),
 });
 
