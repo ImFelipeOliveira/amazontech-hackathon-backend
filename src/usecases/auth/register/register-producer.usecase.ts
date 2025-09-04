@@ -1,7 +1,7 @@
-import { UserRepository } from "../repositories/user.repository";
-import { CreateProducer, Producer } from "../schemas";
-import { AuthenticationService } from "../services/authentication.service";
-import { ValidationError } from "../utils/validation.utils";
+import { UserRepository } from "../../../repositories/user.repository";
+import { CreateProducer, Producer } from "../../../schemas";
+import { AuthenticationService } from "../../../services/authentication.service";
+import { ValidationError } from "../../../utils/validation.utils";
 
 export class RegisterProducerUserCase {
   private repository: UserRepository;

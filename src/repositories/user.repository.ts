@@ -1,12 +1,21 @@
 import { CreateMerchant, CreateProducer, User } from "../schemas";
+import { AuthenticationService } from "../services/authentication.service";
 import { BaseRepository } from "./repository";
+
 
 export class UserRepository extends BaseRepository<User> {
   protected collectionName = "users";
+  private authService: AuthenticationService;
+
+  constructor() {
+    super();
+    this.authService = new AuthenticationService();
+  }
 
   async createMerchant(merchantData: CreateMerchant): Promise<string> {
     const data = {
       ...merchantData,
+      password: await this.authService.hashPassword(merchantData.password),
       uid: this.db.collection(this.collectionName).doc().id,
     };
     return await this.create(data);
@@ -15,6 +24,7 @@ export class UserRepository extends BaseRepository<User> {
   async createProducer(producerData: CreateProducer): Promise<string> {
     const data = {
       ...producerData,
+      password: await this.authService.hashPassword(producerData.password),
       uid: this.db.collection(this.collectionName).doc().id,
       reputation: producerData.reputation || {
         average_rating: 0,

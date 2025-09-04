@@ -23,6 +23,7 @@ export const ReputationSchema = z.object({
 const BaseUserSchema = z.object({
   uid: z.string().min(1),
   email: z.email(),
+  password: z.string().min(6).max(12),
   name: z.string().min(1),
   phone_number: z.string().regex(/^\d{10,11}$/),
   role: z.enum(["merchant", "producer"]),
