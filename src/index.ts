@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./features/routes/auth.routes";
 import { initializeDatabase } from "./shared/config/database";
 import { getServiceAccount } from "./shared/config/service-account";
+import loteRoutes from "./features/routes/lote.routes";
 
 setGlobalOptions({ maxInstances: 2 });
 
@@ -16,5 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: true }));
 app.use("/", authRoutes);
+app.use("/", loteRoutes);
 
 export const api = functions.https.onRequest(app);

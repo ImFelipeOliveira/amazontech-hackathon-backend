@@ -1,4 +1,4 @@
-import { CreateLote, Lote, User } from "../schemas";
+import { CreateLote, Lote } from "../schemas";
 import { BaseRepository } from "./repository";
 import { UserRepository } from "./user.repository";
 import * as geohash from "ngeohash";
@@ -13,8 +13,12 @@ export class LoteRepository extends BaseRepository<Lote> {
     if (!merchant || merchant.role !== "merchant") throw new Error("Merchant not found");
     const precision = 7;
     const hash = geohash.encode(loteData.location.latitude, loteData.location.longitude, precision);
-    const data: Omit<Lote, "id" | "created_at"> = {
+
+    const docRef = this.db.collection(this.collectionName).doc();
+    const data = {
       ...loteData,
+      id: docRef.id, // Add id field as expected by schema
+      uid: docRef.id, // Keep uid for compatibility
       status: "ativo",
       imageUrl: photoUrl,
       merchantId: merchant.uid,
@@ -23,13 +27,13 @@ export class LoteRepository extends BaseRepository<Lote> {
         geohash: hash,
       },
       merchantName: merchant.name,
-      merchantAddressShort: `
-      ${merchant.address.street}, 
-      ${merchant.address.neighborhood}`,
+      merchantAddressShort: `${merchant.address.street}, ${merchant.address.neighborhood}`,
       descriptionAI: descriptionAI,
+      created_at: new Date().toISOString(),
     };
 
-    return await this.create(data);
+    await docRef.set(data);
+    return docRef.id;
   }
 
   async findByMerchant(merchantId: string): Promise<Lote[]> {

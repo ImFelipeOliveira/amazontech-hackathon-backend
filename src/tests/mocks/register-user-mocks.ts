@@ -6,7 +6,7 @@ export const registerInputMocks = {
     name: "João da Silva / Supermercado Preço Bom",
     phone_number: "95991234567",
     role: "merchant" as const,
-    tax_id: "12.345.678/0001-99",
+    tax_id: `${new Date().toISOString()}/0001-99`,
     legal_name: "Supermercado Preço Bom Ltda.",
     address: {
       street: "Av. Capitão Ene Garcez",

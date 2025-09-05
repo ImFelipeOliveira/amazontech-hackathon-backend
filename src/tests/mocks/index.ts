@@ -1,6 +1,7 @@
 // Export all mocks from a central location
 export * from "./register-user-mocks";
 export * from "./service-mocks";
+export * from "./register-lote-mocks";
 
 // Common test utilities
 export const testConstants = {

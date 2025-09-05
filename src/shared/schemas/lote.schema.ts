@@ -59,8 +59,22 @@ export const LoteFilterSchema = z.object({
   path: ["location"],
 });
 
+export const CreateLoteMultipartSchema = z.object({
+  weight: z.string().regex(/^\d+(\.\d+)?$/, "Weight must be a valid number"),
+  limit_date: z.string().datetime("Invalid datetime format"),
+  location: z.string().min(1, "Location is required").refine((val) => {
+    try {
+      const parsed = JSON.parse(val);
+      return LocationSchema.safeParse(parsed).success;
+    } catch {
+      return false;
+    }
+  }, "Invalid location format"),
+});
+
 export type Lote = z.infer<typeof LoteSchema>;
 export type CreateLote = z.infer<typeof CreateLoteSchema>;
 export type UpdateLote = z.infer<typeof UpdateLoteSchema>;
 export type LoteImageUpload = z.infer<typeof LoteImageUploadSchema>;
 export type LoteFilter = z.infer<typeof LoteFilterSchema>;
+export type CreateLoteMultipart = z.infer<typeof CreateLoteMultipartSchema>;

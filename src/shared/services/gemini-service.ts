@@ -5,6 +5,7 @@ import {
   HarmCategory,
 } from "@google/generative-ai";
 import { env } from "../config/env";
+import { ValidationError } from "../utils/validation.utils";
 
 export class GeminiService {
   private readonly model: GenerativeModel;
@@ -60,8 +61,7 @@ export class GeminiService {
       const response = await result.response;
       return response.text();
     } catch (error) {
-      console.error("Erro ao gerar descrição com Gemini:", error);
-      return `Lote de resíduos orgânicos com ${weight}kg. Análise detalhada indisponível no momento.`;
+      throw new ValidationError("Erro ao gerar descrição do lote", 500);
     }
   }
 
