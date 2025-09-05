@@ -6,9 +6,13 @@ import { getFirestore, admin } from "../config/database";
 
 // Base Repository com métodos comuns
 export abstract class BaseRepository<T> {
-  protected db = getFirestore();
+  protected db: admin.firestore.Firestore;
   protected adm = admin;
   protected abstract collectionName: string;
+
+  constructor() {
+    this.db = getFirestore();
+  }
 
   async create(data: Omit<T, "id" | "uid" | "created_at" | "descriptionAI">): Promise<string> {
     const docRef = this.db.collection(this.collectionName).doc();

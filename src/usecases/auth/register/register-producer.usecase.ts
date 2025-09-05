@@ -14,19 +14,22 @@ export class RegisterProducerUserCase {
   }
 
   async execute(input: CreateProducer): Promise<{ token: string, user: Producer }> {
-    this.validate(input);
+    await this.validate(input);
     await this.repository.createProducer(input);
     const user = await this.repository.findByEmail(input.email);
+    if (!user || user.role !== "producer") {
+      throw new Error("Falha ao recuperar usuário recém-criado");
+    }
     const authUser = this.authService.sign({
-      sub: user!.uid,
-      email: user!.email,
-      name: user!.name,
+      sub: user.uid,
+      email: user.email,
+      name: user.name,
       role: "producer",
     });
 
     return {
       token: authUser,
-      user: user! as Producer,
+      user: user,
     };
   }
 

@@ -13,19 +13,21 @@ export class RegisterMerchantUserUseCase {
   }
 
   async execute(input: CreateMerchant): Promise<{ token: string, user: Merchant}> {
-    this.validate(input);
+    await this.validate(input);
     await this.repository.createMerchant(input);
     const user = await this.repository.findByEmail(input.email);
+    if (!user || user.role !== "merchant") {
+      throw new Error("Falha ao recuperar usuário recém-criado");
+    }
     const authUser = this.authService.sign({
-      sub: user!.uid,
-      email: user!.email,
-      name: user!.name,
+      sub: user.uid,
+      email: user.email,
+      name: user.name,
       role: "merchant",
     });
-
     return {
       token: authUser,
-      user: user! as Merchant,
+      user: user,
     };
   }
 
