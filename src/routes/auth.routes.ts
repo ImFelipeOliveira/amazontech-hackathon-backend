@@ -12,7 +12,7 @@ import {
 const authRoutes = Router();
 
 authRoutes.post(
-  "/merchant/register",
+  "/auth/merchant/register",
   validateRequestMiddleware({ body: CreateMerchantSchema }),
   async (req, res) => {
     const controller = new RegisterMerchantController();
@@ -20,7 +20,7 @@ authRoutes.post(
   }
 );
 authRoutes.post(
-  "/producer/register",
+  "/auth/producer/register",
   validateRequestMiddleware({ body: CreateProducerSchema }),
   async (req, res) => {
     const controller = new RegisterProducerController();
@@ -28,7 +28,7 @@ authRoutes.post(
   }
 );
 authRoutes.post(
-  "/login",
+  "/auth/login",
   validateRequestMiddleware({ body: LoginInputSchema }),
   async (req, res) => {
     const controller = new LoginController();
