@@ -1,4 +1,4 @@
-import { CreateLote, Lote } from "../schemas";
+import { CreateLote, Lote, User } from "../schemas";
 import { BaseRepository } from "./repository";
 import { UserRepository } from "./user.repository";
 import * as geohash from "ngeohash";
@@ -7,14 +7,16 @@ import { distanceBetween } from "geofire-common";
 export class LoteRepository extends BaseRepository<Lote> {
   protected collectionName = "lotes";
 
-  async createLote(loteData: CreateLote): Promise<string> {
+  async createLote(loteData: CreateLote, descriptionAI: string, photoUrl: string): Promise<string> {
     const userRepo = new UserRepository();
-    const merchant = await userRepo.findById(loteData.merchantId);
+    const merchant = await userRepo.findById(loteData.user.uid);
     if (!merchant || merchant.role !== "merchant") throw new Error("Merchant not found");
     const precision = 7;
     const hash = geohash.encode(loteData.location.latitude, loteData.location.longitude, precision);
-    const data: Omit<Lote, "id" | "created_at" | "descriptionAI"> = {
+    const data: Omit<Lote, "id" | "created_at"> = {
       ...loteData,
+      status: "ativo",
+      imageUrl: photoUrl,
       merchantId: merchant.uid,
       location: {
         ...loteData.location,
@@ -24,6 +26,7 @@ export class LoteRepository extends BaseRepository<Lote> {
       merchantAddressShort: `
       ${merchant.address.street}, 
       ${merchant.address.neighborhood}`,
+      descriptionAI: descriptionAI,
     };
 
     return await this.create(data);

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LocationSchema } from "./user.schema";
+import { LocationSchema, UserSchema } from "./user.schema";
 
 export const LoteSchema = z.object({
   id: z.string().min(1),
@@ -18,9 +18,15 @@ export const LoteSchema = z.object({
 export const CreateLoteSchema = LoteSchema.omit({
   id: true,
   created_at: true,
+  status: true,
+  imageUrl: true, // Será gerado após upload
   descriptionAI: true, // Será gerado pela IA
   merchantName: true, // Será preenchido automaticamente
+  merchantId: true,
   merchantAddressShort: true, // Será preenchido automaticamente
+}).extend({
+  user: UserSchema,
+  photo: z.instanceof(Buffer).refine((data) => data.length < 5 * 1024 * 1024, { message: "Photo must be less than 5MB" }),
 });
 
 export const UpdateLoteSchema = CreateLoteSchema.partial().extend({
@@ -32,7 +38,6 @@ export const LoteImageUploadSchema = z.object({
   weight: z.number().positive(),
   limit_date: z.iso.datetime(),
   location: LocationSchema,
-  image: z.any(), // File/Buffer - tipo específico depende da implementação
 });
 
 export const LoteFilterSchema = z.object({

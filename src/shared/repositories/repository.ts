@@ -14,7 +14,7 @@ export abstract class BaseRepository<T> {
     this.db = getFirestore();
   }
 
-  async create(data: Omit<T, "id" | "uid" | "created_at" | "descriptionAI">): Promise<string> {
+  async create(data: Omit<T, "id" | "uid" | "created_at" | "descriptionAI" | "imageUrl">): Promise<string> {
     const docRef = this.db.collection(this.collectionName).doc();
     const docData = {
       ...data,
