@@ -25,7 +25,7 @@ export class AgendamentoRepository extends BaseRepository<Agendamento> {
       status: "aguardando_confirmacao" as const,
       collectionData: null,
       producerName: producer.name,
-      loteImageUrl: lote.imageUrl,
+      loteImageUrl: lote.image_url,
       merchantName: lote.merchantName,
     };
 

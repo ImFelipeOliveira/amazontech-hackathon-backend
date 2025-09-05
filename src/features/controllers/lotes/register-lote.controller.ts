@@ -12,7 +12,6 @@ export class RegisterLoteController {
 
   async execute(req: Request, res: Response): Promise<Response> {
     try {
-      // Parse and prepare data (validation already done by middleware)
       const location = typeof req.body.location === "string" ?
         JSON.parse(req.body.location) :
         req.body.location;
@@ -20,11 +19,11 @@ export class RegisterLoteController {
       const weight = parseFloat(req.body.weight);
 
       const inputData = {
-        user: req.body.user,
+        user: (req as any).user,
         weight: weight,
         limit_date: req.body.limit_date,
         location: location,
-        photo: req.file!.buffer, // File is guaranteed to exist due to middleware validation
+        photo: req.file!.buffer,
       };
 
       const lote = await this.registerLoteUseCase.execute(inputData);

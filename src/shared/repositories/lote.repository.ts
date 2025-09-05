@@ -3,7 +3,6 @@ import { BaseRepository } from "./repository";
 import { UserRepository } from "./user.repository";
 import * as geohash from "ngeohash";
 import { distanceBetween } from "geofire-common";
-
 export class LoteRepository extends BaseRepository<Lote> {
   protected collectionName = "lotes";
 
@@ -18,7 +17,6 @@ export class LoteRepository extends BaseRepository<Lote> {
     const data = {
       ...loteData,
       id: docRef.id, // Add id field as expected by schema
-      uid: docRef.id, // Keep uid for compatibility
       status: "ativo",
       imageUrl: photoUrl,
       merchantId: merchant.uid,
@@ -27,7 +25,7 @@ export class LoteRepository extends BaseRepository<Lote> {
         geohash: hash,
       },
       merchantName: merchant.name,
-      merchantAddressShort: `${merchant.address.street}, ${merchant.address.neighborhood}`,
+      merchantAddressShort: `${merchant.address.street}, ${merchant.address.neighborhood}, ${merchant.address.number}`,
       descriptionAI: descriptionAI,
       created_at: new Date().toISOString(),
     };
@@ -61,47 +59,22 @@ export class LoteRepository extends BaseRepository<Lote> {
     longitude: number,
     radiusKm: number
   ): Promise<Lote[]> {
-    const precision = this.choosePrecision(radiusKm);
-    const centerHash = geohash.encode(latitude, longitude, precision);
-    const prefixes = [centerHash, ...geohash.neighbors(centerHash)];
+    const snapshot = await this.db
+      .collection(this.collectionName)
+      .where("status", "==", "ativo")
+      .get();
 
-    const queries = prefixes.map((prefix) =>
-      this.db
-        .collection(this.collectionName)
-        .where("status", "==", "ativo")
-        .orderBy("location.geohash")
-        .startAt(prefix)
-        .endAt(prefix + "\uf8ff")
-        .get()
-    );
-    const snapshots = await Promise.all(queries);
-    const seen = new Set<string>();
-    const candidates: Lote[] = [];
-    for (const snap of snapshots) {
-      for (const doc of snap.docs) {
-        if (seen.has(doc.id)) continue;
-        seen.add(doc.id);
-        candidates.push(doc.data() as Lote);
-      }
-    }
-    return candidates.map((lote) => ({
+    const lotes = snapshot.docs.map((doc) => doc.data() as Lote);
+
+    const filteredLotes = lotes.map((lote) => ({
       lote,
       distance: distanceBetween(
         [latitude, longitude],
-        [lote.location.latitude, lote.location.longitude]
-      ),
+        [lote.location.latitude, lote.location.longitude]),
     }))
       .filter((x) => x.distance <= radiusKm)
       .sort((a, b) => a.distance - b.distance)
       .map((x) => x.lote);
-  }
-
-  private choosePrecision(radiusKm: number): number {
-    // p=3 ~156km, 4 ~39km, 5 ~4.9km, 6 ~1.2km, 7 ~0.153km
-    if (radiusKm > 78) return 3;
-    if (radiusKm > 19) return 4;
-    if (radiusKm > 2.5) return 5;
-    if (radiusKm > 0.3) return 6;
-    return 7;
+    return filteredLotes;
   }
 }

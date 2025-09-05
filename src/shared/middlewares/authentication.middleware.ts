@@ -30,7 +30,7 @@ export async function authenticationMiddleware(req: Request, res: Response, next
       return res.status(HttpStatus.UNAUTHORIZED).json({ error: "Unauthorized - User not found" });
     }
 
-    req.body.user = user;
+    (req as any).user = user;
     next();
   } catch (error) {
     const erro = error as Error | ValidationError;

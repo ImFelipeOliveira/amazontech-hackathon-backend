@@ -12,10 +12,8 @@ type Schemas = {
 
 export function validateRequestMiddleware(schemas: Schemas): RequestHandler {
   return (req: Request, res: Response, next: NextFunction): any => {
-    console.log(req.body);
     if (schemas.body) {
       const result = schemas.body.safeParse(req.body);
-      console.log(result);
       if (!result.success) {
         return res.status(400).json({ error: result.error });
       }
@@ -29,10 +27,11 @@ export function validateRequestMiddleware(schemas: Schemas): RequestHandler {
     }
 
     if (schemas.query) {
-      const result = schemas.query.safeParse(req.query);
+      const result = schemas.query.parse(req.query);
       if (!result.success) {
         return res.status(400).json({ error: result.error });
       }
+      console.log(result.data);
     }
 
     if (schemas.isMultipart && !req.file) {
