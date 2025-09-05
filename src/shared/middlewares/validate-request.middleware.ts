@@ -7,6 +7,7 @@ type Schemas = {
   params?: z.ZodObject<any>;
   query?: z.ZodObject<any>;
   headers?: z.ZodObject<any>;
+  isMultipart?: boolean;
 };
 
 export function validateRequestMiddleware(schemas: Schemas): RequestHandler {
@@ -30,6 +31,10 @@ export function validateRequestMiddleware(schemas: Schemas): RequestHandler {
       if (!result.success) {
         return res.status(400).json({ error: result.error });
       }
+    }
+
+    if (schemas.isMultipart && !req.file) {
+      return res.status(400).json({ error: "File is required" });
     }
 
     next();
