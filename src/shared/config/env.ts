@@ -8,4 +8,7 @@ export const env = {
   firebase: {
     serviceAccountBase64: process.env.SERVICE_ACCOUNT_BASE64,
   },
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY,
+  },
 };
