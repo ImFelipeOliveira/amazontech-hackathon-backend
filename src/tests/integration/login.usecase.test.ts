@@ -1,13 +1,13 @@
 import { describe, test, expect, beforeEach, jest } from "@jest/globals";
-import { LoginUseCase } from "../../usecases/auth/login/login.usecase";
+import { LoginUseCase } from "../../features/usecases/auth/login/login.usecase";
 import {
   loginInputMocks,
   userDatabaseMocks,
   testConstants,
 } from "../mocks";
-
+  
 // Mock UserRepository and AuthenticationService used inside the use case
-jest.mock("../../repositories/user.repository", () => {
+jest.mock("../../shared/repositories/user.repository", () => {
   return {
     UserRepository: jest.fn().mockImplementation(() => ({
       findByEmail: jest.fn(),
@@ -15,7 +15,7 @@ jest.mock("../../repositories/user.repository", () => {
   };
 });
 
-jest.mock("../../services/authentication.service", () => {
+jest.mock("../../shared/services/authentication.service", () => {
   return {
     AuthenticationService: jest.fn().mockImplementation(() => ({
       comparePasswords: jest.fn(),

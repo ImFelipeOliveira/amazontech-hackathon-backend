@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, jest } from "@jest/globals";
-import { RegisterMerchantUserUseCase } from "../../usecases/auth/register/register-merchant.usecase";
+import { RegisterMerchantUserUseCase } from "../../features/usecases/auth/register/register-merchant.usecase";
 import {
   registerInputMocks,
   userDatabaseMocks,
@@ -7,7 +7,7 @@ import {
 } from "../mocks";
 
 // Mock UserRepository and AuthenticationService used inside the use case
-jest.mock("../../repositories/user.repository", () => {
+jest.mock("../../shared/repositories/user.repository", () => {
   return {
     UserRepository: jest.fn().mockImplementation(() => ({
       findByEmail: jest.fn(),
@@ -17,7 +17,7 @@ jest.mock("../../repositories/user.repository", () => {
   };
 });
 
-jest.mock("../../services/authentication.service", () => {
+jest.mock("../../shared/services/authentication.service", () => {
   return {
     AuthenticationService: jest.fn().mockImplementation(() => ({
       hashPassword: jest.fn(),

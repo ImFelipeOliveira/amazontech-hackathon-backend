@@ -1,9 +1,9 @@
-import { HttpStatus } from "../../../http/protocols-enums";
-import { UserRepository } from "../../../repositories/user.repository";
-import { User } from "../../../schemas";
-import { LoginInput } from "../../../schemas/login.schema";
-import { AuthenticationService } from "../../../services/authentication.service";
-import { ValidationError } from "../../../utils/validation.utils";
+import { HttpStatus } from "../../../../shared/http/protocols-enums";
+import { UserRepository } from "../../../../shared/repositories/user.repository";
+import { User } from "../../../../shared/schemas";
+import { LoginInput } from "../../../../shared/schemas/login.schema";
+import { AuthenticationService } from "../../../../shared/services/authentication.service";
+import { ValidationError } from "../../../../shared/utils/validation.utils";
 
 export class LoginUseCase {
   private authService: AuthenticationService;

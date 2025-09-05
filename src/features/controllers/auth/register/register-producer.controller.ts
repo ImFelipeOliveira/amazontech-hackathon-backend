@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
-import { CreateProducer } from "../../../schemas";
+import { CreateProducer } from "../../../../shared/schemas";
 import { RegisterProducerUserCase } from "../../../usecases/auth";
-import { ValidationError } from "../../../utils/validation.utils";
+import { ValidationError } from "../../../../shared/utils/validation.utils";
 
 export class RegisterProducerController {
   private useCase: RegisterProducerUserCase;

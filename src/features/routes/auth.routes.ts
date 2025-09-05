@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { validateRequestMiddleware } from "../middlewares/validate-request.middleware";
-import { CreateMerchantSchema, CreateProducerSchema } from "../schemas";
-import { LoginInputSchema } from "../schemas/login.schema";
+import { validateRequestMiddleware } from "../../shared/middlewares/validate-request.middleware";
+import { CreateMerchantSchema, CreateProducerSchema } from "../../shared/schemas";
+import { LoginInputSchema } from "../../shared/schemas/login.schema";
 import {
   LoginController,
   RegisterMerchantController,
   RegisterProducerController,
-} from "../controllers";
+} from "..";
 
 
 const authRoutes = Router();

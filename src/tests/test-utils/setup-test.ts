@@ -1,7 +1,7 @@
-import { initializeDatabase } from "../../config/database";
+import { initializeDatabase } from "../../shared/config/database";
 import express from "express";
-import authRoutes from "../../routes/auth.routes";
-import { env } from "../../config/env";
+import authRoutes from "../../features/routes/auth.routes";
+import { env } from "../../shared/config/env";
 
 export function setupTest() {
   const serviceAccountBase64 = env.firebase.serviceAccountBase64;

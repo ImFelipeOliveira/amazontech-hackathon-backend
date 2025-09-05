@@ -2,6 +2,7 @@ import { ZodError, ZodType } from "zod";
 import { ErrorResponse } from "../schemas";
 import { HttpStatus } from "../http/protocols-enums";
 
+
 /**
  * Valida dados usando um schema Zod
  * @param {ZodType<T>} schema - Schema Zod para validação
@@ -41,7 +42,7 @@ export function safeValidateSchema<T>(
  */
 export class ValidationError extends Error {
   public readonly code = "VALIDATION_ERROR";
-  public readonly statusCode: HttpStatus;
+  public readonly statusCode: HttpStatus | number;
   constructor(message: string, statusCode: HttpStatus) {
     super(message);
     this.name = "ValidationError";

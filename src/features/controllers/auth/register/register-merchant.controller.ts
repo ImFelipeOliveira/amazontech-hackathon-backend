@@ -1,7 +1,7 @@
-import { CreateMerchant, Merchant } from "../../../schemas";
+import { CreateMerchant, Merchant } from "../../../../shared/schemas";
 import { RegisterMerchantUserUseCase } from "../../../usecases/auth";
 import { Request, Response } from "express";
-import { ValidationError } from "../../../utils/validation.utils";
+import { ValidationError } from "../../../../shared/utils/validation.utils";
 
 
 export class RegisterMerchantController {

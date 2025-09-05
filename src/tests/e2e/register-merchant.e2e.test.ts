@@ -1,7 +1,7 @@
 import request from "supertest";
 import { Express } from "express";
 import * as dotenv from "dotenv";
-import { HttpStatus } from "../../http/protocols-enums";
+import { HttpStatus } from "../../shared/http/protocols-enums";
 import { setupTest } from "../test-utils/setup-test";
 
 dotenv.config();

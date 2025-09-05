@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { LoginUseCase } from "../../usecases/auth";
-import { ValidationError } from "../../utils/validation.utils";
+import { ValidationError } from "../../../shared/utils/validation.utils";
 
 export class LoginController {
   private useCase: LoginUseCase;

@@ -1,8 +1,8 @@
-import { HttpStatus } from "../../../http/protocols-enums";
-import { UserRepository } from "../../../repositories/user.repository";
-import { CreateMerchant, Merchant } from "../../../schemas";
-import { AuthenticationService } from "../../../services/authentication.service";
-import { ValidationError } from "../../../utils/validation.utils";
+import { HttpStatus } from "../../../../shared/http/protocols-enums";
+import { UserRepository } from "../../../../shared/repositories/user.repository";
+import { CreateMerchant, Merchant } from "../../../../shared/schemas";
+import { AuthenticationService } from "../../../../shared/services/authentication.service";
+import { ValidationError } from "../../../../shared/utils/validation.utils";
 
 export class RegisterMerchantUserUseCase {
   private repository: UserRepository;

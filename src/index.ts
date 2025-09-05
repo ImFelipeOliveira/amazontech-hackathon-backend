@@ -2,9 +2,9 @@ import { setGlobalOptions } from "firebase-functions";
 import * as functions from "firebase-functions";
 import express, { Express } from "express";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes";
-import { initializeDatabase } from "./config/database";
-import { getServiceAccount } from "./config/service-account";
+import authRoutes from "./features/routes/auth.routes";
+import { initializeDatabase } from "./shared/config/database";
+import { getServiceAccount } from "./shared/config/service-account";
 
 setGlobalOptions({ maxInstances: 2 });
 
