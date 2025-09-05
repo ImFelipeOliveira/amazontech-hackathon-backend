@@ -1,7 +1,9 @@
+import { HttpStatus } from "../../../http/protocols-enums";
 import { UserRepository } from "../../../repositories/user.repository";
 import { User } from "../../../schemas";
 import { LoginInput } from "../../../schemas/login.schema";
 import { AuthenticationService } from "../../../services/authentication.service";
+import { ValidationError } from "../../../utils/validation.utils";
 
 export class LoginUseCase {
   private authService: AuthenticationService;
@@ -12,12 +14,12 @@ export class LoginUseCase {
   }
   async execute(input: LoginInput): Promise<{ token: string; user: User }> {
     const user = await this.userRepository.findByEmail(input.email);
-    if (!user) throw new Error("User not found");
+    if (!user) throw new ValidationError("User not found", HttpStatus.NOT_FOUND);
     const isValidPassword = await this.authService.comparePasswords({
       password: input.password,
       passwordHash: user.password,
     });
-    if (!isValidPassword) throw new Error("Invalid password");
+    if (!isValidPassword) throw new ValidationError("Invalid password", HttpStatus.UNAUTHORIZED);
     const token = this.authService.sign({
       sub: user.uid,
       role: user.role,

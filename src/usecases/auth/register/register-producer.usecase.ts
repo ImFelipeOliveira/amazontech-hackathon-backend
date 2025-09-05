@@ -1,3 +1,4 @@
+import { HttpStatus } from "../../../http/protocols-enums";
 import { UserRepository } from "../../../repositories/user.repository";
 import { CreateProducer, Producer } from "../../../schemas";
 import { AuthenticationService } from "../../../services/authentication.service";
@@ -31,6 +32,6 @@ export class RegisterProducerUserCase {
 
   private async validate(input: CreateProducer) {
     const email = await this.repository.findByEmail(input.email);
-    if (email) throw new ValidationError("Email já cadastrado");
+    if (email) throw new ValidationError("Email já cadastrado", HttpStatus.BAD_REQUEST);
   }
 }

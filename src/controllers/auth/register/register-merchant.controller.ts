@@ -1,6 +1,7 @@
 import { CreateMerchant, Merchant } from "../../../schemas";
 import { RegisterMerchantUserUseCase } from "../../../usecases/auth";
 import { Request, Response } from "express";
+import { ValidationError } from "../../../utils/validation.utils";
 
 
 export class RegisterMerchantController {
@@ -10,8 +11,13 @@ export class RegisterMerchantController {
   }
 
   async execute(req: Request, res: Response): Promise<Response<Merchant>> {
-    const user = req.body as unknown as CreateMerchant;
-    const result = await this.useCase.execute(user);
-    return res.status(201).json(result);
+    try {
+      const user = req.body as unknown as CreateMerchant;
+      const result = await this.useCase.execute(user);
+      return res.status(201).json(result);
+    } catch (error) {
+      const err = error as ValidationError;
+      return res.status(err.statusCode).json(err.toErrorResponse());
+    }
   }
 }

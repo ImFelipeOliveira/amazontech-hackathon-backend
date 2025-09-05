@@ -1,5 +1,6 @@
-import { ZodError, z, ZodType } from "zod";
+import { ZodError, ZodType } from "zod";
 import { ErrorResponse } from "../schemas";
+import { HttpStatus } from "../http/protocols-enums";
 
 /**
  * Valida dados usando um schema Zod
@@ -12,7 +13,7 @@ export function validateSchema<T>(schema: ZodType<T>, data: unknown): T {
     return schema.parse(data);
   } catch (error) {
     if (error instanceof ZodError) {
-      throw new ValidationError("Dados inválidos");
+      throw new ValidationError("Dados inválidos", HttpStatus.BAD_REQUEST);
     }
     throw error;
   }
@@ -40,10 +41,11 @@ export function safeValidateSchema<T>(
  */
 export class ValidationError extends Error {
   public readonly code = "VALIDATION_ERROR";
-
-  constructor(message: string) {
+  public readonly statusCode: HttpStatus;
+  constructor(message: string, statusCode: HttpStatus) {
     super(message);
     this.name = "ValidationError";
+    this.statusCode = statusCode;
   }
 
   /**

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-as-default
 import z from "zod";
 
 export const LoginInputSchema = z.object({

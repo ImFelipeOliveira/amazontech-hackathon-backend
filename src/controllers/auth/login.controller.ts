@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { LoginUseCase } from "../../usecases/auth";
+import { ValidationError } from "../../utils/validation.utils";
 
 export class LoginController {
   private useCase: LoginUseCase;
@@ -8,8 +9,13 @@ export class LoginController {
   }
 
   async execute(req: Request, res: Response): Promise<Response> {
-    const { email, password } = req.body;
-    const result = await this.useCase.execute({ email, password });
-    return res.status(200).json(result);
+    try {
+      const { email, password } = req.body;
+      const result = await this.useCase.execute({ email, password });
+      return res.status(200).json(result);
+    } catch (err) {
+      const error = err as ValidationError;
+      return res.status(error.statusCode).json(error.toErrorResponse());
+    }
   }
 }
