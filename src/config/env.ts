@@ -6,6 +6,6 @@ export const env = {
     secret: process.env.JWT_SECRET,
   },
   firebase: {
-    serviceAccountBase64: process.env.FIREBASE_SERVICE_ACCOUNT_BASE64,
+    serviceAccountBase64: process.env.SERVICE_ACCOUNT_BASE64,
   },
 };
