@@ -28,7 +28,7 @@ authRoutes.post(
   }
 );
 authRoutes.post(
-  "/auth/producer/login",
+  "/auth/login",
   validateRequestMiddleware({ body: LoginInputSchema }),
   async (req, res) => {
     const controller = new LoginController();
