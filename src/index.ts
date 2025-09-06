@@ -6,6 +6,8 @@ import authRoutes from "./features/routes/auth.routes";
 import { initializeDatabase } from "./shared/config/database";
 import { getServiceAccount } from "./shared/config/service-account";
 import loteRoutes from "./features/routes/lote.routes";
+import scheduledRoutes from "./features/routes/agendamento.routes";
+
 
 setGlobalOptions({ maxInstances: 2 });
 
@@ -18,5 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: true }));
 app.use("/", authRoutes);
 app.use("/", loteRoutes);
+app.use("/", scheduledRoutes);
 
 export const api = functions.https.onRequest(app);

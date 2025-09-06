@@ -1,4 +1,5 @@
 import { getFirestore, admin } from "../config/database";
+import { Agendamento } from "../schemas";
 
 /**
  * Exemplo de Repository usando o singleton Firestore + Schemas Zod
@@ -37,6 +38,12 @@ export abstract class BaseRepository<T> {
 
   async delete(id: string): Promise<void> {
     await this.db.collection(this.collectionName).doc(id).delete();
+  }
+
+  async findByStatus(status: string): Promise<Agendamento[]> {
+    const snapshot = await this.db.collection(this.collectionName)
+      .where("status", "==", status).get();
+    return snapshot.docs.map((doc) => doc.data() as Agendamento);
   }
 
   async findAll(limit = 10, offset = 0): Promise<T[]> {

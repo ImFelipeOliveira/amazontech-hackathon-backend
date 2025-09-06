@@ -62,4 +62,15 @@ export class UserRepository extends BaseRepository<User> {
 
     return snapshot.empty ? null : (snapshot.docs[0].data() as User);
   }
+
+  async findMerchantByLoteId(loteId: string): Promise<User | null> {
+    const snapshot = await this.db
+      .collection(this.collectionName)
+      .where("role", "==", "merchant")
+      .where("lote_id", "==", loteId)
+      .limit(1)
+      .get();
+
+    return snapshot.empty ? null : (snapshot.docs[0].data() as User);
+  }
 }

@@ -43,7 +43,7 @@ export function safeValidateSchema<T>(
 export class ValidationError extends Error {
   public readonly code = "VALIDATION_ERROR";
   public readonly statusCode: HttpStatus | number;
-  constructor(message: string, statusCode: HttpStatus) {
+  constructor(message = "Internal server error", statusCode: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR) {
     super(message);
     this.name = "ValidationError";
     this.statusCode = statusCode;
